@@ -15,8 +15,33 @@ app.use(express.static(publicPath));
 io.on('connection', (socket) => {
     console.log(`New user connected. ID: ${socket.id}`);
 
+    /*
+    // This emits a message from server.js to index.js (.emit())
+    socket.emit('newEmail', {
+        from: 'huseinr@outlook.com',
+        to: 'someone@gmail.com',
+        subject: 'Sample subject',
+        body: 'This is a sample email body'
+    });
+
+    // This listens to a message arriving from client to server (.on())
+    socket.on('createEmail', (newEmail) => {
+        console.log('createEmail', newEmail);
+    });
+    */
+
     socket.on('disconnect', () => {
         console.log('Client disconnected');
+    });
+
+    socket.on('createMessage', (message) => {
+        console.log('createMessage', message);
+    });
+
+    socket.emit('newMessage', {
+        from: 'User 2',
+        text: 'Message from User 2',
+        createdAt: new Date().toString()
     });
 });
 
