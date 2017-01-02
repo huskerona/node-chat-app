@@ -15,6 +15,18 @@ app.use(express.static(publicPath));
 io.on('connection', (socket) => {
     console.log(`New user connected. ID: ${socket.id}`);
 
+    socket.emit('newUser', {
+        from: 'Admin',
+        text: 'Welcome to the chat app',
+        createdAt: new Date().toString()
+    });
+
+    socket.broadcast.emit('userJoined', {
+        from: 'Admin',
+        text: 'New user joined',
+        createdAt: new Date().toString()
+    });
+
     /*
     // This emits a message from server.js to index.js (.emit())
     socket.emit('newEmail', {
@@ -41,6 +53,11 @@ io.on('connection', (socket) => {
             text: message.text,
             createdAt: message.createdAt
         });
+        // socket.broadcast.emit('newMessage', {
+        //     from: message.from,
+        //     text: message.text,
+        //     createdAt: new Date().toString()
+        // });
     });
 
     // socket.emit('newMessage', {

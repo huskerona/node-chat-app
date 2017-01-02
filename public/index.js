@@ -31,20 +31,30 @@ socket.on('disconnect', function() {
     console.log('Disconnected from the server');
 });
 
-socket.on('newEmail', function(email) {
-    console.log('New email');
-    console.log(email);
+socket.on('newUser', function(message) {
+    console.log('newUser');
+    showMessage(message);
 });
+
+socket.on('userJoined', function(message) {
+    console.log('userJoined');
+    showMessage(message);
+})
 
 socket.on('newMessage', function(message) {
     console.log('newMessage', message);
-    const msg = document.getElementById('msg');
-
-    if (msg) {
-        msg.innerHTML = `From: ${message.from}\nText: ${message.text}\nCreate At: ${message.createdAt}\n========\n`;
-    }
+    showMessage(message);
 });
 
 socket.on('createMessage', function(message) {
     console.log('createMessage', message);
-})
+});
+
+function showMessage(message) {
+    const msg = document.getElementById('msg');
+
+    if (msg) {
+        const text = JSON.stringify(message, undefined, 2);
+        msg.innerHTML += `${text}\n========\n\n`;
+    }
+}
