@@ -38,6 +38,11 @@ socket.on('newEmail', function(email) {
 
 socket.on('newMessage', function(message) {
     console.log('newMessage', message);
+    const msg = document.getElementById('msg');
+
+    if (msg) {
+        msg.innerHTML = `From: ${message.from}\nText: ${message.text}\nCreate At: ${message.createdAt}\n========\n`;
+    }
 });
 
 socket.on('createMessage', function(message) {
