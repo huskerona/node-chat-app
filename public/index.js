@@ -21,10 +21,10 @@ socket.on('connect', function () {
     });
     */
 
-    socket.emit('createMessage', {
-        from: 'User1',
-        text: 'Message created'
-    })
+    // socket.emit('createMessage', {
+    //     from: 'User1',
+    //     text: 'Message created'
+    // })
 });
 
 socket.on('disconnect', function() {
@@ -39,3 +39,7 @@ socket.on('newEmail', function(email) {
 socket.on('newMessage', function(message) {
     console.log('newMessage', message);
 });
+
+socket.on('createMessage', function(message) {
+    console.log('createMessage', message);
+})

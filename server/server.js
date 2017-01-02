@@ -36,13 +36,18 @@ io.on('connection', (socket) => {
 
     socket.on('createMessage', (message) => {
         console.log('createMessage', message);
+        io.emit('newMessage', {
+            from: message.from,
+            text: message.text,
+            createdAt: message.createdAt
+        });
     });
 
-    socket.emit('newMessage', {
-        from: 'User 2',
-        text: 'Message from User 2',
-        createdAt: new Date().toString()
-    });
+    // socket.emit('newMessage', {
+    //     from: 'User 2',
+    //     text: 'Message from User 2',
+    //     createdAt: new Date().toString()
+    // });
 });
 
 server.listen(port, () => {
