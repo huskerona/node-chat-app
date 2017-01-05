@@ -19,8 +19,23 @@ io.on('connection', (socket) => {
     socket.emit('newUser', generateMessage('Admin', 'Welcome to the chat app'));
 
     socket.broadcast.emit('userJoined', generateMessage('Admin', 'New user joined'));
+        
+    socket.on('createMessage', (message, callback) => {
+        console.log('createMessage', message);
+        io.emit('newMessage', generateMessage(message.from, message.text));
+        callback('This is from the server!'); // event acknowledgement
+    });
 
-    /*
+    socket.on('disconnect', () => {
+        console.log('Client disconnected');
+    });
+});
+
+server.listen(port, () => {
+    console.log(`Listening on port: ${port}`);
+});
+
+    /* Sample code for .emit and .on
     // This emits a message from server.js to index.js (.emit())
     socket.emit('newEmail', {
         from: 'huseinr@outlook.com',
@@ -34,28 +49,3 @@ io.on('connection', (socket) => {
         console.log('createEmail', newEmail);
     });
     */
-
-    socket.on('disconnect', () => {
-        console.log('Client disconnected');
-    });
-
-    socket.on('createMessage', (message) => {
-        console.log('createMessage', message);
-        io.emit('newMessage', generateMessage(message.from, message.text));
-        // socket.broadcast.emit('newMessage', {
-        //     from: message.from,
-        //     text: message.text,
-        //     createdAt: new Date().toString()
-        // });
-    });
-
-    // socket.emit('newMessage', {
-    //     from: 'User 2',
-    //     text: 'Message from User 2',
-    //     createdAt: new Date().toString()
-    // });
-});
-
-server.listen(port, () => {
-    console.log(`Listening on port: ${port}`);
-});

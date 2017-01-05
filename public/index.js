@@ -5,14 +5,6 @@ socket.on('connect', function () {
     console.log('Connected to server');
     console.log(socket);
 
-    const idElem = document.getElementById('id');
-
-    if (idElem) {
-        idElem.innerHTML = socket.id;
-    } else {
-        console.log('Cannot access span tag with ID="id"');
-    }
-
     /*
     // Client emits a message to the server
     socket.emit('createEmail', {
@@ -33,16 +25,19 @@ socket.on('disconnect', function() {
 
 socket.on('newUser', function(message) {
     console.log('newUser');
+
     showMessage(message);
 });
 
 socket.on('userJoined', function(message) {
     console.log('userJoined');
+
     showMessage(message);
 })
 
 socket.on('newMessage', function(message) {
     console.log('newMessage', message);
+
     showMessage(message);
 });
 
@@ -50,11 +45,25 @@ socket.on('createMessage', function(message) {
     console.log('createMessage', message);
 });
 
-function showMessage(message) {
-    const msg = document.getElementById('msg');
+$(document).ready(function() {
+    $('#message-form').on('submit', function (e) {
+        e.preventDefault();
+        console.log('Invoking submit');
 
-    if (msg) {
-        const text = JSON.stringify(message, undefined, 2);
-        msg.innerHTML += `${text}\n========\n\n`;
-    }
+        const message = $('#message').val();
+
+        socket.emit('createMessage', {
+            from: 'User',
+            text: message
+        }, function () {
+
+        });
+    });
+});
+
+function showMessage(message) {
+    var li = $('<li></li>');
+    li.text(`${message.from}: ${message.text}`);
+
+    $('#messages').append(li);
 }
