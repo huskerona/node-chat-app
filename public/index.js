@@ -45,6 +45,16 @@ socket.on('createMessage', function(message) {
     console.log('createMessage', message);
 });
 
+socket.on('newLocation', function(message) {
+    const li = $('<li></li>');
+    const a = $('<a target="_blank">My Location</a>');
+    
+    a.attr('href', message.url);
+    li.append(a);
+
+    $('#messages').append(li);
+});
+
 $(document).ready(function() {
     $('#message-form').on('submit', function (e) {
         e.preventDefault();
@@ -58,6 +68,23 @@ $(document).ready(function() {
         }, function () {
 
         });
+    });
+
+    $('#sendGeoLocation').on('click', function(e) {
+        e.preventDefault();
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(loc) {
+                socket.emit('createLocationMessage', {
+                    latitude: loc.coords.latitude,
+                    longitude: loc.coords.longitude
+                });
+            }, function() {
+                alert('Cannot retrieve location');
+            });
+        } else {
+            alert('GeoLocation not enabled.');
+        }
     });
 });
 
