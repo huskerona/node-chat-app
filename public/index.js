@@ -1,3 +1,4 @@
+
 const socket = io();
 
 // Arrow function might crash on mobile phones
@@ -47,9 +48,14 @@ socket.on('createMessage', function(message) {
 
 socket.on('newLocation', function(message) {
     const li = $('<li></li>');
-    const a = $('<a target="_blank">My Location</a>');
+    const timestamp = moment(message.createdAt);
+    const a = $(`<a target="_blank">My Location</a>`);
+    const span = $('<span></span>');
+    span.text(`[${timestamp.format('h:mm:ss a')}] - `);
     
     a.attr('href', message.url);
+
+    li.append(span);
     li.append(a);
 
     $('#messages').append(li);
@@ -90,7 +96,8 @@ $(document).ready(function() {
 
 function showMessage(message) {
     var li = $('<li></li>');
-    li.text(`${message.from}: ${message.text}`);
+    const timestamp = moment(message.createdAt);
+    li.text(`[${timestamp.format('h:mm:ss a')}] - ${message.from}: ${message.text}`);
 
     $('#messages').append(li);
 }
