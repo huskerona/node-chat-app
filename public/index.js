@@ -37,9 +37,18 @@ socket.on('userJoined', function(message) {
 })
 
 socket.on('newMessage', function(message) {
-    console.log('newMessage', message);
+    // console.log('newMessage', message);
 
-    showMessage(message);
+    // showMessage(message);
+    const time = moment(message.createdAt).format("h:mm a");
+    const template = $("#message-template").html();
+    const html = Mustache.render(template, {
+        text: message.text, 
+        from: message.from,
+        createdAt: time
+    });
+
+    $("#messages").append(html);
 });
 
 socket.on('createMessage', function(message) {
@@ -47,18 +56,15 @@ socket.on('createMessage', function(message) {
 });
 
 socket.on('newLocation', function(message) {
-    const li = $('<li></li>');
-    const timestamp = moment(message.createdAt);
-    const a = $(`<a target="_blank">My Location</a>`);
-    const span = $('<span></span>');
-    span.text(`[${timestamp.format('h:mm:ss a')}] - `);
-    
-    a.attr('href', message.url);
+    const timestamp = moment(message.createdAt).format("h:mm a");
+    const template = $("#location-message-template").html();
+    const html = Mustache.render(template, {
+        //from: message.from,
+        url: `${message.latitude}, ${message.longitude}`,
+        //createdAt: timestamp
+    });
 
-    li.append(span);
-    li.append(a);
-
-    $('#messages').append(li);
+    $("#messages").append(html);
 });
 
 $(document).ready(function() {

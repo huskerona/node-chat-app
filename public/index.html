@@ -7,6 +7,7 @@
         <script src="/socket.io/socket.io.js"></script>
         <script src="./scripts/jquery.js"></script>
         <script src="./scripts/moment.js"></script>
+        <script src="./scripts/mustache.js"></script>
         
         <script src='./index.js'></script>
 
@@ -22,5 +23,13 @@
         <ol id="messages">
             
         </ol>
+
+        <script id="message-template" type="text/template">
+            <p>[{{ createdAt }}] - {{ from }}: {{ text }}</p>
+        </script>
+
+        <script id="location-message-template" type="text/template">
+            <p>{{ url }}</p>
+        </script>
     </body>
 </html>
